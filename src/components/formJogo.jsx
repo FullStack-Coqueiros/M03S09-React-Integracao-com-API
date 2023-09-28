@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { CATEGORIAS } from "../constants";
 
@@ -15,6 +15,7 @@ const estudios = [
 
 export default function FormJogo() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [jogo, setJogo] = useState({});
 
   const handleAddJogo = async (e) => {
@@ -29,6 +30,10 @@ export default function FormJogo() {
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>&lt; Voltar</button>
+      <br />
+      <br />
+
       <h2>{id ? "Editar" : "Adicionar"} Jogo</h2>
       <form onSubmit={id ? handleEditJogo : handleAddJogo}>
 

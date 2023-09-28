@@ -1,23 +1,25 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function FormEstudio() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [estudio, setEstudio] = useState({});
 
   const handleAddEstudio = async (e) => {
     e.preventDefault();
-
   };
 
   const handleEditEstudio = async (e) => {
     e.preventDefault();
-
   };
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>&lt; Voltar</button>
+      <br />
+      <br />
+
       <h2>{id ? "Editar " : "Cadastrar "} estúdio</h2>
       <form onSubmit={id ? handleEditEstudio : handleAddEstudio}>
         <label htmlFor="nomeDoEstudio">Nome do estúdio</label>

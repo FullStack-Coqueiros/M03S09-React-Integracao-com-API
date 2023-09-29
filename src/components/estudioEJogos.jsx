@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import { CATEGORIAS } from "../constants";
+import { apiClient } from "../service";
 
 export default function EstudioEJogos() {
   const navigate = useNavigate();
   const [idDoEstudioClicado, setIdDoEstudioClicado] = useState(undefined);
   const [jogos, setJogos] = useState([]);
   const [estudios, setEstudios] = useState([]);
+  console.log({ estudios, jogos });
 
   useEffect(() => {
-    fetch("http://localhost:5135/api/Jogos")
-      .then((resposta) => resposta.json())
-      .then((dados) => setJogos(dados))
+    apiClient
+      .get("/Jogos")
+      .then((resposta) => setJogos(resposta.data))
       .catch((erro) => console.error(erro));
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5135/api/Estudios")
+    apiClient
+      .get("/Estudios")
       .then((resposta) => setEstudios(resposta.data))
       .catch((erro) => console.error(erro));
   }, []);
@@ -27,7 +28,15 @@ export default function EstudioEJogos() {
   const handleDeleteEstudio = async (e, estudioId) => {
     e.preventDefault();
 
-    console.log(estudioId);
+    apiClient.delete(`/Estudios/${estudioId}`)
+      .then(() => {
+        const novosEstudios = estudios.filter((estudio) => estudio.id !== estudioId);
+        const novosJogos = jogos.filter((jogo) => jogo.estudioId !== estudioId);
+        setEstudios(novosEstudios);
+        setJogos(novosJogos);
+        alert("Estúdio excluído com sucesso!");
+      })
+      .catch((erro) => console.error(erro));
   };
 
   const handleEditEstudio = async (e, estudioToEdit) => {

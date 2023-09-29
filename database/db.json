@@ -11,12 +11,6 @@
       "nome": "Rockstar",
       "endereco": "Rua Y",
       "dataCriacao": "2019-01-01T23:07:48.707861-03:00"
-    },
-    {
-      "id": "9012",
-      "nome": "Blizzard",
-      "endereco": "Rua Z",
-      "dataCriacao": "2021-11-21T23:07:48.707861-03:00"
     }
   ],
   "Jogos": [

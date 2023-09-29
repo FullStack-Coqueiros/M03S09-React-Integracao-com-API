@@ -1,17 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { apiClient } from "../service";
 
 export default function FormEstudio() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [estudio, setEstudio] = useState({});
+  console.log({ id, estudio })
+
+  useEffect(() => {
+    if (id) {
+      apiClient
+        .get(`/Estudios/${id}`)
+        .then((resposta) => setEstudio(resposta.data))
+        .catch((erro) => console.error(erro));
+    }
+  }, [id]);
 
   const handleAddEstudio = async (e) => {
     e.preventDefault();
+
+    const data = {
+      ...estudio,
+      dataCriacao: new Date(),
+    }
+
+    apiClient.post("/Estudios", data)
+      .then(() => navigate("/"))
+      .catch((erro) => console.error(erro));
   };
 
   const handleEditEstudio = async (e) => {
     e.preventDefault();
+
+    apiClient.put(`/Estudios/${id}`, estudio)
+      .then(() => navigate("/"))
+      .catch((erro) => console.error(erro));
   };
 
   return (
@@ -31,19 +55,6 @@ export default function FormEstudio() {
           value={estudio.nome || ""}
           onChange={(e) => {
             setEstudio({ ...estudio, nome: e.target.value });
-          }}
-        />
-        <br />
-        <br />
-
-        <label htmlFor="dataCriacao">Data de lançamento</label>
-        <br />
-        <input
-          type="date"
-          value={estudio.dataCriacao ? estudio.dataCriacao.split("T")[0] : ""}
-          onChange={(e) => {
-            const data = new Date(e.target.value).toISOString();
-            setEstudio({ ...estudio, dataCriacao: data });
           }}
         />
         <br />

@@ -1,30 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { CATEGORIAS } from "../constants";
-
-// subistitui por chamadas a API
-const estudios = [
-  {
-    id: 1,
-    nome: "Nintendo",
-    endereco: "Rua X",
-    dataCriacao: "2023-09-28T06:37:36.772Z"
-  },
-];
-const jogos = [
-  {
-    id: 1,
-    nome: "Age II",
-    dataLancamento: "2023-09-27T23:07:48.707861-03:00",
-    categoria: 2,
-    estudioId: 1
-  }
-];
 
 export default function EstudioEJogos() {
   const navigate = useNavigate();
   const [idDoEstudioClicado, setIdDoEstudioClicado] = useState(undefined);
+  const [jogos, setJogos] = useState([]);
+  const [estudios, setEstudios] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5135/api/Jogos")
+      .then((resposta) => resposta.json())
+      .then((dados) => setJogos(dados))
+      .catch((erro) => console.error(erro));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5135/api/Estudios")
+      .then((resposta) => setEstudios(resposta.data))
+      .catch((erro) => console.error(erro));
+  }, []);
 
   const handleDeleteEstudio = async (e, estudioId) => {
     e.preventDefault();

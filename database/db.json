@@ -1,0 +1,52 @@
+{
+  "Estudios": [
+    {
+      "id": "1234",
+      "nome": "Nintendo",
+      "endereco": "Rua X",
+      "dataCriacao": "2013-09-27T23:07:48.707861-03:00"
+    },
+    {
+      "id": "5678",
+      "nome": "Rockstar",
+      "endereco": "Rua Y",
+      "dataCriacao": "2019-01-01T23:07:48.707861-03:00"
+    },
+    {
+      "id": "9012",
+      "nome": "Blizzard",
+      "endereco": "Rua Z",
+      "dataCriacao": "2021-11-21T23:07:48.707861-03:00"
+    }
+  ],
+  "Jogos": [
+    {
+      "id": "abcd",
+      "nome": "Age II",
+      "dataLancamento": "2023-09-27T23:07:48.707861-03:00",
+      "categoria": 2,
+      "estudioId": "1234"
+    },
+    {
+      "id": "efgh",
+      "nome": "GTA",
+      "dataLancamento": "2023-10-01T23:07:48.707861-03:00",
+      "categoria": 1,
+      "estudioId": "1234"
+    },
+    {
+      "id": "ijkl",
+      "nome": "Diablo",
+      "categoria": 3,
+      "dataLancamento": "2023-02-02T23:07:48.707861-03:00",
+      "estudioId": "5678"
+    },
+    {
+      "id": "mnop",
+      "nome": "Warcraft",
+      "categoria": 3,
+      "dataLancamento": "2023-03-03T23:07:48.707861-03:00",
+      "estudioId": "9012"
+    }
+  ]
+}

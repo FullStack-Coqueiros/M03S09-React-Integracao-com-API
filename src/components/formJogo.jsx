@@ -1,31 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { CATEGORIAS } from "../constants";
-
-// subistitui por chamadas a API
-const estudios = [
-  {
-    id: 1,
-    nome: "Nintendo",
-    endereco: "Rua X",
-    dataCriacao: "2023-09-28T06:37:36.772Z"
-  },
-];
+import { apiClient } from "../service";
 
 export default function FormJogo() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [jogo, setJogo] = useState({});
+  const [estudios, setEstudios] = useState([]);
+
+  useEffect(() => {
+    apiClient
+      .get("/Estudios")
+      .then((resposta) => setEstudios(resposta.data))
+      .catch((erro) => console.error(erro));
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      apiClient
+        .get(`/Jogos/${id}`)
+        .then((resposta) => setJogo(resposta.data))
+        .catch((erro) => console.error(erro));
+    }
+  }, [id]);
 
   const handleAddJogo = async (e) => {
     e.preventDefault();
 
+    const data = {
+      ...jogo,
+      categoria: parseInt(jogo.categoria),
+    };
+
+    apiClient
+      .post("/Jogos", data)
+      .then(() => {
+        window.alert("Jogo adicionado com sucesso!");
+        navigate("/");
+      })
+      .catch((erro) => console.error(erro));
   };
 
   const handleEditJogo = async (e) => {
     e.preventDefault();
 
+    window.confirm("Tem certeza que deseja editar o jogo?") &&
+      apiClient
+        .put(`/Jogos/${id}`, jogo)
+        .then(() => {
+          window.alert("Jogo editado com sucesso!");
+          navigate("/");
+        })
+        .catch((erro) => console.error(erro));
   };
 
   return (
@@ -36,7 +64,6 @@ export default function FormJogo() {
 
       <h2>{id ? "Editar" : "Adicionar"} Jogo</h2>
       <form onSubmit={id ? handleEditJogo : handleAddJogo}>
-
         <label htmlFor="estudio">Estúdio</label>
         <br />
         <select
@@ -56,13 +83,11 @@ export default function FormJogo() {
           </option>
           {estudios.map((estudio, index) => {
             return (
-            <option
-              value={estudio.id}
-              key={index}
-            >
-              {estudio.nome}
-            </option>
-          )})}
+              <option value={estudio.id} key={index}>
+                {estudio.nome}
+              </option>
+            );
+          })}
         </select>
         <br />
         <br />

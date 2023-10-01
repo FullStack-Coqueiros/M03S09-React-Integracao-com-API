@@ -9,7 +9,6 @@ export default function EstudioEJogos() {
   const [idDoEstudioClicado, setIdDoEstudioClicado] = useState(undefined);
   const [jogos, setJogos] = useState([]);
   const [estudios, setEstudios] = useState([]);
-  console.log({ estudios, jogos });
 
   useEffect(() => {
     apiClient
@@ -28,15 +27,21 @@ export default function EstudioEJogos() {
   const handleDeleteEstudio = async (e, estudioId) => {
     e.preventDefault();
 
-    apiClient.delete(`/Estudios/${estudioId}`)
-      .then(() => {
-        const novosEstudios = estudios.filter((estudio) => estudio.id !== estudioId);
-        const novosJogos = jogos.filter((jogo) => jogo.estudioId !== estudioId);
-        setEstudios(novosEstudios);
-        setJogos(novosJogos);
-        alert("Estúdio excluído com sucesso!");
-      })
-      .catch((erro) => console.error(erro));
+    window.confirm("Tem certeza que deseja excluir o estúdio?") &&
+      apiClient
+        .delete(`/Estudios/${estudioId}`)
+        .then(() => {
+          const novosEstudios = estudios.filter(
+            (estudio) => estudio.id !== estudioId
+          );
+          const novosJogos = jogos.filter(
+            (jogo) => jogo.estudioId !== estudioId
+          );
+          setEstudios(novosEstudios);
+          setJogos(novosJogos);
+          alert("Estúdio excluído com sucesso!");
+        })
+        .catch((erro) => console.error(erro));
   };
 
   const handleEditEstudio = async (e, estudioToEdit) => {
@@ -47,7 +52,16 @@ export default function EstudioEJogos() {
 
   const handleDeleteJogo = async (e, jogoId) => {
     e.preventDefault();
-    console.log(jogoId);
+    
+    window.confirm("Tem certeza que deseja excluir o jogo?") &&
+      apiClient
+        .delete(`/Jogos/${jogoId}`)
+        .then(() => {
+          const novosJogos = jogos.filter((jogo) => jogo.id !== jogoId);
+          setJogos(novosJogos);
+          alert("Jogo excluído com sucesso!");
+        })
+        .catch((erro) => console.error(erro));
   };
 
   const handleEditJogo = async (e, jogoToEdit) => {

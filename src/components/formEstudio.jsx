@@ -6,7 +6,6 @@ export default function FormEstudio() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [estudio, setEstudio] = useState({});
-  console.log({ id, estudio })
 
   useEffect(() => {
     if (id) {
